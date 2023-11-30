@@ -1,4 +1,4 @@
 open_ai:
-  api_key: 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
+  api_key: xxx
 vector_store:
   persist_dir: ./vector_store
