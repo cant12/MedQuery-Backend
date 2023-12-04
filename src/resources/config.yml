@@ -2,3 +2,5 @@ open_ai:
   api_key: xxx
 vector_store:
   persist_dir: ./vector_store
+dataset:
+  path: ./data 

@@ -8,6 +8,7 @@ retriever = Retriever()
 async def generate_answer(question: str):
     try:
         answer = retriever.get_response(question)
+        # answer = "temp answer"
         response_body = {"answer": answer}
         return response_body
     except Exception as e:
