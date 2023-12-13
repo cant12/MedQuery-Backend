@@ -1,6 +1,5 @@
 import os
 import yaml
-from datasets import load_dataset
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
