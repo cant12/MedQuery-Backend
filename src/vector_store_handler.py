@@ -9,6 +9,7 @@ with open('./src/resources/config.yml', 'r') as file:
         config = yaml.safe_load(file)
 persist_dir = config['vector_store']['persist_dir']
 
+# modify model device as per requirement
 embedding_model = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-xl', model_kwargs={'device' : 'mps'})
 
 class VectorStoreHandler:
