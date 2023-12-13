@@ -1,6 +1,6 @@
 open_ai:
-  api_key: xxx
+  api_key: "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"
 vector_store:
   persist_dir: ./vector_store
 dataset:
-  path: ./data 
+  path: ./data
