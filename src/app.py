@@ -16,7 +16,7 @@ async def generate_answer(question: str):
         raise HTTPException(500, "Got the following error while attempting to generating answer: " + str(e))
     
 @app.post("/add/webpage")
-async def find_best_move(request: Request):
+async def add_webpage(request: Request):
     try:
         request_body = await request.json()
         vector_store_handler.index_web_pages(request_body["links"])
