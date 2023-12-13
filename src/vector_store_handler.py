@@ -1,3 +1,4 @@
+import os
 import yaml
 from datasets import load_dataset
 from langchain.embeddings import HuggingFaceInstructEmbeddings
@@ -9,15 +10,20 @@ with open('./src/resources/config.yml', 'r') as file:
         config = yaml.safe_load(file)
 persist_dir = config['vector_store']['persist_dir']
 
-instructor_embeddings = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-xl', model_kwargs={'device' : 'mps'})
+embedding_model = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-xl', model_kwargs={'device' : 'mps'})
 
 class VectorStoreHandler:
     def __init__(self):
          self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 
+    def load_vector_store():
+        if not os.path.exists(persist_dir):
+             raise Exception("Vectorstore does not exist at: " + persist_dir)
+        return Chroma(persist_directory=persist_dir, embedding_function=embedding_model)
+
     def index_docs(self, doc_list):
         splits = self.text_splitter.split_documents(doc_list)
-        Chroma.from_documents(documents=splits, embedding=instructor_embeddings, persist_directory=persist_dir)
+        Chroma.from_documents(documents=splits, embedding=embedding_model, persist_directory=persist_dir)
 
     def index_web_pages(self, webpage_list):
         loader = WebBaseLoader(web_paths=webpage_list)

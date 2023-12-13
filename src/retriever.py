@@ -5,20 +5,17 @@ from langchain.chat_models import ChatOpenAI
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.vectorstores import Chroma
-from src.vector_store_handler import instructor_embeddings
+from src.vector_store_handler import VectorStoreHandler
 
 with open('./src/resources/config.yml', 'r') as file:
         config = yaml.safe_load(file)
 openai_key = config['open_ai']['api_key']
-persist_dir = config['vector_store']['persist_dir']
 
 os.environ["OPENAI_API_KEY"] = openai_key
 
 class Retriever:
     def __init__(self):
-        if not os.path.exists(persist_dir):
-             raise Exception("Vectorstore does not exist at: " + persist_dir)
-        self.vectorstore = Chroma(persist_directory=persist_dir, embedding_function=instructor_embeddings)
+        self.vectorstore = VectorStoreHandler.load_vector_store()
         self.retriever = self.vectorstore.as_retriever()
         self.prompt = hub.pull("rlm/rag-prompt")
         self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
