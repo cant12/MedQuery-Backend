@@ -21,9 +21,9 @@ open_ai:
   api_key: your-key
 ```
 
-Run the indexing script to create the vector-store
+Run the indexing script to create the vector-store for this dataset https://huggingface.co/datasets/epfl-llm/guidelines. Give the *crop_size* argument to specify the size of the dataset you want to crop. The normalization will be performed accordingly
 ```
-python src/index.py
+python src/index_epfl.py <crop_size>
 ```
 
 Start the fast-api server

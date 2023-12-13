@@ -4,18 +4,9 @@ from langchain import hub
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
-from langchain.vectorstores import Chroma
+from langchain.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
 from src.vector_store_handler import VectorStoreHandler
-from langchain.prompts import ChatPromptTemplate
 from operator import itemgetter
-
-from langchain.prompts.chat import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    SystemMessagePromptTemplate,
-)
-from langchain.schema import HumanMessage, SystemMessage
-
 
 with open("./src/resources/config.yml", "r") as file:
     config = yaml.safe_load(file)
