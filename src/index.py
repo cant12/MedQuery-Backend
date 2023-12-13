@@ -1,19 +1,13 @@
 import os
-import shutil
+from tqdm import tqdm
 import yaml
 from datasets import load_dataset
 from langchain.schema.document import Document
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
+from src.vector_store_handler import VectorStoreHandler
 
 with open('./src/resources/config.yml', 'r') as file:
         config = yaml.safe_load(file)
-openai_key = config['open_ai']['api_key']
-persist_dir = config['vector_store']['persist_dir']
 dataset_path = config['dataset']['path']
-
-os.environ["OPENAI_API_KEY"] = openai_key
 
 def main():
     if(os.path.exists(dataset_path)):
@@ -26,17 +20,15 @@ def main():
 
     print("Creating vector store")
     train_data = dataset['train']
+
     docs = []
-    for example in train_data[:10]['clean_text']:
+    vector_store_handler = VectorStoreHandler()
+    for i in tqdm(range(0, 20)):
+        example = train_data[i]['clean_text']
         docs.append(Document(page_content=example))
-
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    splits = text_splitter.split_documents(docs)
-
-    if os.path.exists(persist_dir):
-        shutil.rmtree(persist_dir)
-
-    Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings(), persist_directory=persist_dir)
+        if (i+1)%10 == 0:
+            vector_store_handler.index_docs(docs)
+            docs = []
 
 if __name__ == '__main__':
     main()
