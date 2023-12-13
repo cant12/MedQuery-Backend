@@ -22,7 +22,7 @@ with open("./src/resources/config.yml", "r") as file:
 openai_key = config["open_ai"]["api_key"]
 
 os.environ["OPENAI_API_KEY"] = openai_key
-
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 class Retriever:
     def __init__(self):
@@ -81,7 +81,7 @@ class Retriever:
 
         return msg.content
 
-    def generate_answer(self, messages):
+    def generate_answer_with_chat_context(self, messages):
         template = """Below is the condensed conversation between you and a patient. You are a virtual assistant for a Medical Q and A app. 
         {context}
 
